@@ -1,0 +1,76 @@
+{
+  "project_info": {
+    "project_number": "348115742743",
+    "project_id": "ncert-kitab",
+    "storage_bucket": "ncert-kitab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348115742743:android:85ba2424674b0da348ec52",
+        "android_client_info": {
+          "package_name": "com.techtitudetribe.ncertkitab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348115742743-jrhtkmt7kit9foj90m08qtfo3pemkgpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsAJW1U327vNC_oELDwvf7wCHsxOkeknA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348115742743-jrhtkmt7kit9foj90m08qtfo3pemkgpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348115742743:android:f7948688536d020148ec52",
+        "android_client_info": {
+          "package_name": "com.techtitudetribe.ncertkitabadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348115742743-2b0rqhgkl8n3go95i61ltr7oqu111jr0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techtitudetribe.ncertkitabadmin",
+            "certificate_hash": "ffb5fe4c91f22b5979286414c7a0b69981e34f90"
+          }
+        },
+        {
+          "client_id": "348115742743-jrhtkmt7kit9foj90m08qtfo3pemkgpn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsAJW1U327vNC_oELDwvf7wCHsxOkeknA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348115742743-jrhtkmt7kit9foj90m08qtfo3pemkgpn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
