@@ -32,11 +32,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class UploadPdfActivity extends AppCompatActivity {
-    private EditText selectPdf, className, subjectName, chapterName;
+    private EditText selectPdf, className, subjectName, chapterName, chapterNo;
     private TextView uploadPdf;
     private ImageView back;
     private CheckBox cbseCheck, upCheck;
-    private String categoryname, chapter_name, class_no, sub_name, saveCurrentDate, saveCurrentTime;
+    private String categoryname, chapter_name, class_no, sub_name, chapter_no, saveCurrentDate, saveCurrentTime;
     private static final int Gallery_Pick = 1;
     private Uri pdfUri;
     private String chapterRandomKey, downloadChapUrl;
@@ -62,6 +62,7 @@ public class UploadPdfActivity extends AppCompatActivity {
         className = (EditText) findViewById(R.id.pdf_class_name);
         subjectName  = (EditText) findViewById(R.id.pdf_subject_name);
         chapterName = (EditText) findViewById(R.id.pdf_chapter_name);
+        chapterNo  = findViewById(R.id.pdf_chapter_no);
 
         uploadPdf = (TextView) findViewById(R.id.pdf_upload);
         back = (ImageView) findViewById(R.id.back);
@@ -109,6 +110,7 @@ public class UploadPdfActivity extends AppCompatActivity {
         sub_name = subjectName.getText().toString();
         chapter_name = chapterName.getText().toString();
         class_no = className.getText().toString();
+        chapter_no  = chapterNo.getText().toString();
 
         if (pdfUri == null)
         {
@@ -123,7 +125,12 @@ public class UploadPdfActivity extends AppCompatActivity {
 
         {
             Toast.makeText(UploadPdfActivity.this, "Enter the class number", Toast.LENGTH_SHORT).show();
-        } else
+        }
+        else if (TextUtils.isEmpty(chapter_no))
+        {
+            Toast.makeText(UploadPdfActivity.this, "Please enter chapter number", Toast.LENGTH_SHORT).show();
+        }
+            else
         {
             StoreChapterInfo();
         }
@@ -197,9 +204,14 @@ public class UploadPdfActivity extends AppCompatActivity {
     private void saveChapterPdfToDatabase() {
 
         HashMap hashMap = new HashMap();
+        hashMap.put("sub_pdf", downloadChapUrl);
         hashMap.put("name", sub_name);
-        hashMap.put("class name", class_no);
-        hashMap.put("pdf", downloadChapUrl);
+        hashMap.put("class_no", class_no);
+        hashMap.put("chapter_name", chapter_name);
+        hashMap.put("chapter_no", chapter_no);
+
+
+
 
         chapterRef.child(categoryname).child(chapterRandomKey).updateChildren(hashMap)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
