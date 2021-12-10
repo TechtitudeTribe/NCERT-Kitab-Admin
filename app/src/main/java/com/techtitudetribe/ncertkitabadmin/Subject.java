@@ -1,5 +1,7 @@
 package com.techtitudetribe.ncertkitabadmin;
 
+import android.content.Context;
+
 public class Subject {
     private String  name, image;
 

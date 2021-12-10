@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCERTKitabAdmin">
         <activity
+            android:name=".UploadPdfActivity"
+            android:exported="true" />
+        <activity
             android:name=".SubjectListActivity"
             android:exported="true" />
         <activity

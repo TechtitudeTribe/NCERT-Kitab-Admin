@@ -85,8 +85,6 @@ public class AddSubjectActivity extends AppCompatActivity {
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, GalleryPick);
 
-
-
     }
 
     @Override
@@ -107,10 +105,12 @@ public class AddSubjectActivity extends AppCompatActivity {
         if (imageUri==null)
         {
             Toast.makeText(AddSubjectActivity.this, "Please select subject", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(sub_name))
+        } else
+            if (TextUtils.isEmpty(sub_name))
         {
             Toast.makeText(AddSubjectActivity.this, "Please enter subject name", Toast.LENGTH_SHORT).show();
-        }else
+        }
+            else
         {
 
             StoreSubjectInfo();
@@ -131,7 +131,7 @@ public class AddSubjectActivity extends AppCompatActivity {
         SimpleDateFormat currentDate= new SimpleDateFormat("MMM dd, yyyy");
         saveCurrentDate= currentDate.format(calendar.getTime());
 
-        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss a");
+        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss ");
         saveCurrentTime= currentTime.format(calendar.getTime());
 
 
