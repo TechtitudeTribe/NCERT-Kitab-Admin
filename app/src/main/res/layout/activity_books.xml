@@ -5,16 +5,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SubjectListActivity">
+    tools:context=".BooksActivity">
 
     <RelativeLayout
-        android:id="@+id/subject_list_header"
+        android:id="@+id/view_books_header"
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:background="@color/creative_red">
 
         <ImageButton
-            android:id="@+id/subject_list_back"
+            android:id="@+id/view_books_back"
             android:layout_width="48dp"
             android:layout_height="36dp"
             android:layout_centerVertical="true"
@@ -24,55 +24,35 @@
             android:scaleType="fitXY"
             android:src="@drawable/arrow_right"
             app:tint="@color/white" />
-
         <TextView
-            android:id="@+id/subject_list_title"
+            android:id="@+id/view_books_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:fontFamily="serif"
-            android:gravity="right"
-            android:text="Class - 7\nBooks"
+            android:text="Subject"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
 
     <FrameLayout
-        android:layout_below="@+id/subject_list_header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/view_books_header">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/subject_list"
+            android:id="@+id/books_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
         <ProgressBar
-            android:id="@+id/subject_list_progress_bar"
+            android:id="@+id/books_list_progress_bar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:indeterminateTint="@color/creative_red"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/creative_red"/>
     </FrameLayout>
-
-
-    <ImageView
-        android:id="@+id/add_subject"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:translationZ="5dp"
-        android:background="@drawable/widget_shape"
-        android:backgroundTint="@color/creative_red"
-        android:padding="13dp"
-        android:src="@drawable/add"
-        app:tint="@color/white" />
 
 </RelativeLayout>

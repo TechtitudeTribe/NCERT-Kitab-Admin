@@ -10,6 +10,16 @@
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_main.xml" value="0.196875" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_subject_list.xml" value="0.196875" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/view_subject_list_layout.xml" value="0.196875" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/drawable/circular_background.xml" value="0.290625" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/drawable/right_arrow.xml" value="0.290625" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/drawable/text_background.xml" value="0.290625" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/activity_add_subject.xml" value="0.264" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/activity_books.xml" value="0.27025641025641023" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/activity_main.xml" value="0.16983695652173914" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/activity_splash_screen.xml" value="0.176" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/activity_subject_list.xml" value="0.16983695652173914" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/progress_bar.xml" value="0.27025641025641023" />
+        <entry key="..\:/Users/Yash/StudioProjects/NCERT-Kitab-Admin/app/src/main/res/layout/subject_list_layout.xml" value="0.16983695652173914" />
       </map>
     </option>
   </component>
