@@ -118,7 +118,7 @@ public class AddSubjectActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
             String currentDateAndTime = sdf.format(new Date());
 
-            subjectRef.child(boardString).child(standardString).child("sub"+currentDateAndTime).addListenerForSingleValueEvent(new ValueEventListener() {
+            subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists())
@@ -143,7 +143,7 @@ public class AddSubjectActivity extends AppCompatActivity {
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    subjectRef.child(boardString).child(standardString).setValue(subjectListAdapter)
+                    subjectRef.child(boardString).child(standardString).child("sub"+currentDateAndTime).setValue(subjectListAdapter)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -166,7 +166,7 @@ public class AddSubjectActivity extends AppCompatActivity {
 
                 }
             };
-            subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(valueEventListener);
+            subjectRef.child(boardString).child(standardString).child("sub"+currentDateAndTime).addListenerForSingleValueEvent(valueEventListener);
         }
     }
 
