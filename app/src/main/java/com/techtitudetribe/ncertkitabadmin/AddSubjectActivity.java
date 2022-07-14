@@ -33,7 +33,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class AddSubjectActivity extends AppCompatActivity {
 
@@ -113,7 +115,10 @@ public class AddSubjectActivity extends AppCompatActivity {
             LoadingBar.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             LoadingBar.setCanceledOnTouchOutside(true);
 
-            subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(new ValueEventListener() {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+            String currentDateAndTime = sdf.format(new Date());
+
+            subjectRef.child(boardString).child(standardString).child("sub"+currentDateAndTime).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists())
