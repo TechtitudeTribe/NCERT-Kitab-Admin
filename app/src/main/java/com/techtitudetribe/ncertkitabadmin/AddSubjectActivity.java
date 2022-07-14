@@ -33,7 +33,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 public class AddSubjectActivity extends AppCompatActivity {
 
@@ -113,6 +115,9 @@ public class AddSubjectActivity extends AppCompatActivity {
             LoadingBar.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             LoadingBar.setCanceledOnTouchOutside(true);
 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+            String currentDateAndTime = sdf.format(new Date());
+
             subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -138,7 +143,7 @@ public class AddSubjectActivity extends AppCompatActivity {
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    subjectRef.child(boardString).child(standardString).setValue(subjectListAdapter)
+                    subjectRef.child(boardString).child(standardString).child("sub"+currentDateAndTime).setValue(subjectListAdapter)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -161,7 +166,7 @@ public class AddSubjectActivity extends AppCompatActivity {
 
                 }
             };
-            subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(valueEventListener);
+            subjectRef.child(boardString).child(standardString).child("sub"+currentDateAndTime).addListenerForSingleValueEvent(valueEventListener);
         }
     }
 
