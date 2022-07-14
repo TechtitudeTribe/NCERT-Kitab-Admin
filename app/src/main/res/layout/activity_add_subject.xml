@@ -1,61 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginLeft="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="20dp"
     tools:context=".AddSubjectActivity">
 
-    <ImageView
-        android:id="@+id/subject_image"
+    <RelativeLayout
+        android:id="@+id/add_subject_header"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:src="@drawable/subject_image"
-        android:background="@drawable/widget_shape"
-        android:backgroundTint="@color/creative_red_light"
-        app:tint="@color/white" />
+        android:layout_height="120dp"
+        android:background="@color/creative_red">
 
-    <EditText
-        android:id="@+id/subject_name"
+        <ImageButton
+            android:id="@+id/add_subject_back"
+            android:layout_width="48dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:background="@color/creative_red"
+            android:rotation="180"
+            android:scaleType="fitXY"
+            android:src="@drawable/arrow_right"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:fontFamily="serif"
+            android:gravity="right"
+            android:text="Add New\nSubject"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/add_subject_header">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="serif"
+            android:text="Select Board :"
+            android:textColor="@color/creative_red"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <RadioGroup
+            android:id="@+id/add_subject_board_selection"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="left"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/hindi"
+                android:fontFamily="serif"
+                android:buttonTint="@color/creative_red"
+                android:text="Hindi"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"/>
+            <RadioButton
+                android:layout_marginLeft="35dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/english"
+                android:buttonTint="@color/creative_red"
+                android:text="English"
+                android:fontFamily="serif"
+                android:textSize="14sp"/>
+        </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="serif"
+            android:text="Select Standard :"
+            android:textColor="@color/creative_red"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+            <RadioGroup
+                android:id="@+id/add_subject_standard_selection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="left"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="1"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="2"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="3"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="4"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="5"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="6"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="7"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="8"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="9"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="10"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="11"
+                    android:textSize="13sp" />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:buttonTint="@color/creative_red"
+                    android:fontFamily="serif"
+                    android:text="12"
+                    android:layout_marginRight="10dp"
+                    android:textSize="13sp" />
+            </RadioGroup>
+        </HorizontalScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="serif"
+            android:text="Subject Name :"
+            android:textColor="@color/creative_red"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/add_subject_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
+            android:hint="e.g. Mathematics, English"
+            android:background="@drawable/text_background"
+            android:fontFamily="serif"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingTop="8dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="8dp"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Subject Name"
-        android:background="@drawable/widget_shape"
-        android:textStyle="normal"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:layout_marginTop="15dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
-        android:fontFamily="serif"/>
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:id="@+id/add_new_subject_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_alignParentLeft="true"
+            android:translationZ="3dp"
+            android:textColor="@color/smoky_black"
+            android:fontFamily="serif"
+            android:background="@drawable/text_background"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:layout_margin="10dp"/>
+        <TextView
+            android:id="@+id/add_new_subject_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:layout_alignParentRight="true"
+            android:translationZ="3dp"
+            android:textColor="@color/white"
+            android:fontFamily="serif"
+            android:background="@drawable/text_background"
+            android:backgroundTint="@color/creative_red"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:layout_margin="10dp"/>
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/add_subject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Add Subject"
-        android:textColor="@color/white"
-        android:textAlignment="center"
-        android:background="@drawable/widget_shape"
-        android:backgroundTint="@color/creative_red"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="90dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:fontFamily="serif"/>
-
-
-
-
-
-
-
-
-</LinearLayout>
+</RelativeLayout>

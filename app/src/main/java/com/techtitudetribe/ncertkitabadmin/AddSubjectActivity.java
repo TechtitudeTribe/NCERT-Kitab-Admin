@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,8 +22,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -31,185 +36,133 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class AddSubjectActivity extends AppCompatActivity {
-    private ImageView subjectImage;
+
+    private RadioGroup board, standard;
+    private String boardString = "", standardString = "";
     private EditText subjectName;
-    private TextView addSubject;
-    private String categoryname, sub_name, saveCurrentTime, saveCurrentDate;
-    private static final int GalleryPick = 1;
-    private Uri imageUri;
-    private String subjectRandomKey, downloadImageUrl;
-    private StorageReference subjectImageRef;
+    private TextView add, cancel;
+    private ProgressDialog LoadingBar;
     private DatabaseReference subjectRef;
-    private ProgressDialog loadingBar;
-
-
+    private long count;
+    private SubjectListAdapter subjectListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_subject);
 
+        board = (RadioGroup) findViewById(R.id.add_subject_board_selection);
+        standard = (RadioGroup) findViewById(R.id.add_subject_standard_selection);
+        subjectName = (EditText) findViewById(R.id.add_subject_name);
+        add = (TextView) findViewById(R.id.add_new_subject_confirm);
+        cancel = (TextView) findViewById(R.id.add_new_subject_cancel);
+        subjectRef = FirebaseDatabase.getInstance().getReference().child("SubjectList");
 
-        categoryname = getIntent().getExtras().get("category").toString();
-        subjectImageRef = FirebaseStorage.getInstance().getReference().child("Subject Image");
-        subjectRef = FirebaseDatabase.getInstance().getReference().child("Subject Details");
+        LoadingBar = new ProgressDialog(this);
+        subjectListAdapter = new SubjectListAdapter();
 
-        subjectImage = (ImageView) findViewById(R.id.subject_image);
-        subjectName = (EditText) findViewById(R.id.subject_name);
-        addSubject = (TextView) findViewById(R.id.add_subject);
-        loadingBar= new ProgressDialog(this);
+        board.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(i);
+                boardString = radioButton.getText().toString();
+            }
+        });
 
+        standard.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(i);
+                standardString = radioButton.getText().toString();
+            }
+        });
 
-        subjectImage.setOnClickListener(new View.OnClickListener() {
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OpenGalley();
+                checkValidations();
             }
         });
 
-        addSubject.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
-                AddSubject();
+                AddSubjectActivity.super.onBackPressed();
             }
         });
 
-
     }
 
+    private void checkValidations() {
+        if (TextUtils.isEmpty(boardString))
+        {
+            Toast.makeText(AddSubjectActivity.this, "Please select a board...", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(standardString))
+        {
+            Toast.makeText(AddSubjectActivity.this, "Please select a standard...", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(subjectName.getText().toString().trim()))
+        {
+            Toast.makeText(AddSubjectActivity.this, "Please enter a valid name...", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            LoadingBar.show();
+            LoadingBar.setContentView(R.layout.progress_bar);
+            LoadingBar.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            LoadingBar.setCanceledOnTouchOutside(true);
 
-    private void OpenGalley() {
-        Intent galleryIntent = new Intent();
-        galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GalleryPick);
+            subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists())
+                    {
+                        count = snapshot.getChildrenCount();
+                    }
+                    else
+                    {
+                        count = 0;
+                    }
+                }
 
-    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+                }
+            });
 
-        if(requestCode==GalleryPick && resultCode==RESULT_OK && data!=null){
+            subjectListAdapter.setCount(count+1);
+            subjectListAdapter.setName(subjectName.getText().toString().trim());
 
-            imageUri=data.getData();
-            subjectImage.setImageURI(imageUri);
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    subjectRef.child(boardString).child(standardString).setValue(subjectListAdapter)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful())
+                            {
+                                LoadingBar.dismiss();
+                                Toast.makeText(AddSubjectActivity.this, "Subject uploaded successfully...", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                            {
+                                LoadingBar.dismiss();
+                                Toast.makeText(AddSubjectActivity.this, "Error Occurred : "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            };
+            subjectRef.child(boardString).child(standardString).addListenerForSingleValueEvent(valueEventListener);
         }
     }
 
-
-    private void AddSubject() {
-        sub_name = subjectName.getText().toString();
-        
-        if (imageUri==null)
-        {
-            Toast.makeText(AddSubjectActivity.this, "Please select subject", Toast.LENGTH_SHORT).show();
-        } else
-            if (TextUtils.isEmpty(sub_name))
-        {
-            Toast.makeText(AddSubjectActivity.this, "Please enter subject name", Toast.LENGTH_SHORT).show();
-        }
-            else
-        {
-
-            StoreSubjectInfo();
-        }
-
-    }
-
-    private void StoreSubjectInfo() {
-
-        loadingBar.setTitle("Add new Subject");
-        loadingBar.setMessage("Plzz wait");
-        loadingBar.setCanceledOnTouchOutside(false);
-        loadingBar.show();
-
-
-        Calendar calendar = Calendar.getInstance();
-
-        SimpleDateFormat currentDate= new SimpleDateFormat("MMM dd, yyyy");
-        saveCurrentDate= currentDate.format(calendar.getTime());
-
-        SimpleDateFormat currentTime= new SimpleDateFormat("HH:mm:ss ");
-        saveCurrentTime= currentTime.format(calendar.getTime());
-
-
-        subjectRandomKey = saveCurrentDate + saveCurrentTime;
-
-        StorageReference filepath = subjectImageRef.child(imageUri.getLastPathSegment() + subjectRandomKey + ".jpg");
-
-
-        final UploadTask uploadTask = filepath.putFile(imageUri);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                String message= e.toString();
-                Toast.makeText(AddSubjectActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
-                loadingBar.dismiss();
-
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                Toast.makeText(AddSubjectActivity.this, "Upload Subject Successfully", Toast.LENGTH_SHORT).show();
-
-                Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful())
-                        {
-                            throw task.getException();
-                        }
-
-                        downloadImageUrl = filepath.getDownloadUrl().toString();
-                        return filepath.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful())
-                        {
-                            downloadImageUrl = task.getResult().toString();
-                            saveSubjectToDatabase();
-                        }
-                    }
-                });
-            }
-        });
-
-
-    }
-
-    private void saveSubjectToDatabase() {
-
-        HashMap<String, Object> productMap = new HashMap<>();
-        productMap.put("name", sub_name);
-        productMap.put("image", downloadImageUrl);
-
-        subjectRef.child(categoryname).child(subjectRandomKey).updateChildren(productMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful())
-                        {
-                            Intent i = new Intent(AddSubjectActivity.this, MainActivity.class);
-                            startActivity(i);
-                            finish();
-
-                            loadingBar.dismiss();
-                            Toast.makeText(AddSubjectActivity.this, "Subject Added Successfully", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            loadingBar.dismiss();
-                            String message =task.getException().toString();
-                            Toast.makeText(AddSubjectActivity.this, "Error:"+ message, Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-                });
-    }
 }

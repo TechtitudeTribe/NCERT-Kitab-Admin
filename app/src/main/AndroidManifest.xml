@@ -10,8 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCERTKitabAdmin">
         <activity
-            android:name=".UploadPdfActivity"
-            android:exported="true" />
+            android:name=".BooksActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreenActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".SubjectListActivity"
             android:exported="true" />
@@ -20,13 +29,7 @@
             android:exported="true" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"></activity>
     </application>
 
 </manifest>
