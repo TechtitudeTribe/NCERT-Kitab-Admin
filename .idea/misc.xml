@@ -7,9 +7,13 @@
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/drawable/subject_image.xml" value="0.21302083333333333" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/drawable/subject_picture.xml" value="0.137" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/drawable/widget_shape.xml" value="0.21302083333333333" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_add_notes_subject.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_add_subject.xml" value="0.15" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_books.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_main.xml" value="0.196875" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_notes.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_notes_class.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_notes_subject.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_show_pdf.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_splash_screen.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/Administrator/AndroidStudioProjects/NCERTKitabAdmin/app/src/main/res/layout/activity_subject_list.xml" value="0.196875" />

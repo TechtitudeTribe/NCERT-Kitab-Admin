@@ -47,7 +47,7 @@ public class BooksActivity extends AppCompatActivity {
         addPdf = (ImageView) findViewById(R.id.add_pdf);
         chapterlist = (RecyclerView)findViewById(R.id.books_list);
 
-        //categoryname = getIntent().getExtras().get("category").toString();
+        categoryname = getIntent().getExtras().get("category").toString();
         chapterpdfRef = FirebaseStorage.getInstance().getReference().child("Subject Image").child("Chapter Pdf");
         bookRef = FirebaseDatabase.getInstance().getReference().child("Pdf Details");
 
@@ -88,7 +88,7 @@ public class BooksActivity extends AppCompatActivity {
         Query book_list = bookRef.orderByChild("count");
 
         FirebaseRecyclerAdapter<BookAdapter, BookViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<BookAdapter, BookViewHolder>(
+                new FirebaseRecyclerAdapter<BookAdapter, BookViewHolder>(tyyyyyyyyyyyyyyyy5656565656565656565656565
                         BookAdapter.class,
                         R.layout.book_list_layout,
                         BookViewHolder.class,
@@ -130,7 +130,7 @@ public class BooksActivity extends AppCompatActivity {
 
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setType("pdf/");
-                                intent.setData(Uri.parse());
+                               // intent.setData(Uri.parse());
                                 startActivity(intent);
                             }
                         });

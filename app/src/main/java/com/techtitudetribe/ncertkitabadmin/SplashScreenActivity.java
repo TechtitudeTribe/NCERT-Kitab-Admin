@@ -19,6 +19,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         englishMedium = (LinearLayout) findViewById(R.id.splash_screen_english);
         hindiMedium = (LinearLayout) findViewById(R.id.splash_screen_hindi);
 
+
+
+
         englishMedium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,5 +41,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 }
