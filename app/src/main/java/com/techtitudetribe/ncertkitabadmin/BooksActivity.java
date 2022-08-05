@@ -2,6 +2,7 @@ package com.techtitudetribe.ncertkitabadmin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,12 +32,13 @@ import org.w3c.dom.Text;
 
 public class BooksActivity extends AppCompatActivity {
     private ImageView addPdf;
-    private RecyclerView chapterlist;
-    private DatabaseReference bookRef;
+    private TextView chaptertext, notestext;
+    private RecyclerView chapterlist, noteslist;
+    private DatabaseReference bookRef, nootesRef;
     private String categoryname, chapter_name, chapter_no ;
     private ProgressBar progressBar;
     private Uri pdfUri;
-    private StorageReference chapterpdfRef;
+    private StorageReference chapterpdfRef, notespdfRef;
     private long count = 0;
 
     @Override
@@ -46,33 +48,63 @@ public class BooksActivity extends AppCompatActivity {
 
         addPdf = (ImageView) findViewById(R.id.add_pdf);
         chapterlist = (RecyclerView)findViewById(R.id.books_list);
+        noteslist = (RecyclerView)findViewById(R.id.notes_list);
 
-        categoryname = getIntent().getExtras().get("category").toString();
+        chaptertext = (TextView)findViewById(R.id.books_text);
+        notestext = (TextView)findViewById(R.id.notes_text);
+
+        // categoryname = getIntent().getExtras().get("category").toString();
         chapterpdfRef = FirebaseStorage.getInstance().getReference().child("Subject Image").child("Chapter Pdf");
         bookRef = FirebaseDatabase.getInstance().getReference().child("Pdf Details");
+
+        notespdfRef = FirebaseStorage.getInstance().getReference().child("Notes Image").child("Notes Pdf");
+        nootesRef = FirebaseDatabase.getInstance().getReference().child("Notes Details");
 
         progressBar = (ProgressBar) findViewById(R.id.books_list_progress_bar);
 
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(),2);
         chapterlist.setLayoutManager(layoutManager);
 
-        bookRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    progressBar.setVisibility(View.VISIBLE);
-                    viewChapterList();
-                }else
-                {
-                    progressBar.setVisibility(View.GONE);
-                }
-            }
 
+        GridLayoutManager noteslayoutManger = new GridLayoutManager(getApplicationContext(),2);
+        noteslist.setLayoutManager(noteslayoutManger);
+
+     viewChapterList();
+     viewNotesList();
+
+     chaptertext.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View view) {
+             chaptertext.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+             chaptertext.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.creative_red));
+             notestext.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+             notestext.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+
+             chapterlist.setVisibility(View.VISIBLE);
+             noteslist.setVisibility(View.GONE);
+             progressBar.setVisibility(View.GONE);
+
+
+         }
+     });
+
+        notestext.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onClick(View view) {
+                notestext.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                notestext.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.creative_red));
+                chaptertext.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.white));
+                chaptertext.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.black));
+
+                noteslist.setVisibility(View.VISIBLE);
+                chapterlist.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+
 
             }
         });
+
+
 
         addPdf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,12 +115,68 @@ public class BooksActivity extends AppCompatActivity {
         });
     }
 
+    private void viewNotesList() {
+
+        Query notes_list = nootesRef.orderByChild("count");
+        FirebaseRecyclerAdapter<NotesAdapter, NotesViewHolder> firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<NotesAdapter, NotesViewHolder>(
+                        NotesAdapter.class,
+                        R.layout.notes_list_layout,
+                        NotesViewHolder.class,
+                        notes_list
+
+                ) {
+                    @Override
+                    protected void populateViewHolder(NotesViewHolder notesViewHolder, NotesAdapter notesAdapter, int i) {
+                        notesViewHolder.setChapterName(notesAdapter.chapterName);
+                        notesViewHolder.setChapterNo(notesAdapter.chapterNo);
+
+                        TextView dltNote = notesViewHolder.mView.findViewById(R.id.delete_notes);
+                        TextView viewNote = notesViewHolder.mView.findViewById(R.id.show_notes);
+
+                        String key = getRef(i).getKey();
+                        dltNote.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                nootesRef.child(key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()){
+                                            Toast.makeText(BooksActivity.this, "Notes Remove Successfully", Toast.LENGTH_SHORT).show();
+                                        }else
+                                        {
+                                            String msg = task.getException().getMessage();
+                                            Toast.makeText(BooksActivity.this, "error occoured!"+msg, Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                });
+                            }
+                        });
+
+                        viewNote.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent viewpdf = new Intent(BooksActivity.this, ViewPdfActivity.class);
+                                viewpdf.putExtra("chapterName",notesAdapter.getChapterName());
+                                viewpdf.putExtra("url",notesAdapter.getUrl());
+                                startActivity(viewpdf);
+
+                            }
+                        });
+
+                    }
+                };
+        noteslist.setAdapter(firebaseRecyclerAdapter);
+
+    }
+
     private void viewChapterList() {
 
         Query book_list = bookRef.orderByChild("count");
 
         FirebaseRecyclerAdapter<BookAdapter, BookViewHolder> firebaseRecyclerAdapter =
-                new FirebaseRecyclerAdapter<BookAdapter, BookViewHolder>(tyyyyyyyyyyyyyyyy5656565656565656565656565
+                new FirebaseRecyclerAdapter<BookAdapter, BookViewHolder>(
                         BookAdapter.class,
                         R.layout.book_list_layout,
                         BookViewHolder.class,
@@ -127,11 +215,11 @@ public class BooksActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
 
+                                Intent viewpdf = new Intent(BooksActivity.this, ViewPdfActivity.class);
+                                viewpdf.putExtra("chapter_name",bookAdapter.getChapter_name());
+                                viewpdf.putExtra("booksUrl",bookAdapter.getBooksUrl());
+                                startActivity(viewpdf);
 
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setType("pdf/");
-                               // intent.setData(Uri.parse());
-                                startActivity(intent);
                             }
                         });
 
@@ -159,6 +247,27 @@ public class BooksActivity extends AppCompatActivity {
 
             TextView chapName = (TextView) mView.findViewById(R.id.show_chap_name);
             chapName.setText(chap_name);
+        }
+    }
+
+    public static class NotesViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+        public NotesViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setChapterName(String chapterName) {
+
+            TextView notesName = (TextView) mView.findViewById(R.id.notes_name);
+            notesName.setText(chapterName);
+
+        }
+
+        public void setChapterNo(String chapterNo) {
+
+            TextView notesNo = (TextView) mView.findViewById(R.id.notes_no);
+            notesNo.setText(chapterNo);
         }
     }
 }

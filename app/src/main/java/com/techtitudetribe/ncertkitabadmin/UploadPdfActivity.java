@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,16 +34,17 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class UploadPdfActivity extends AppCompatActivity {
-    private EditText selectPdf, className, subjectName, chapterName, chapterNo;
-    private TextView uploadPdf;
+    private EditText selectPdf, subjectName, chapterName, chapterNo;
+    private RadioGroup uploadBoard, uploadStandard, uploadCategory;
+    private TextView addpdf, cancelpdf;
     private ImageView back;
-    private CheckBox cbseCheck, upCheck;
+    private String boardString = "", standardString = "", categoryUpload = "";
     private String categoryname, chapter_name, class_no, sub_name, chapter_no, saveCurrentDate, saveCurrentTime;
     private static final int Gallery_Pick = 1;
     private Uri pdfUri;
     private String chapterRandomKey, downloadChapUrl;
-    private StorageReference chapterpdfRef;
-    private DatabaseReference chapterRef;
+    private StorageReference chapterpdfRef, notespdfRef;
+    private DatabaseReference chapterRef, notesRef;
     private ProgressDialog loadingBar;
 
 
@@ -49,23 +52,50 @@ public class UploadPdfActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_pdf);
-
-
-        categoryname = getIntent().getExtras().get("category").toString();
+      categoryname = getIntent().getExtras().get("category").toString();
         chapterpdfRef = FirebaseStorage.getInstance().getReference().child("Subject Image").child("Chapter Pdf");
         chapterRef = FirebaseDatabase.getInstance().getReference().child("Pdf Details");
 
-        cbseCheck = (CheckBox) findViewById(R.id.checkbox_cbseboard);
-        upCheck = (CheckBox)findViewById(R.id.checkbox_upboard);
+        notespdfRef = FirebaseStorage.getInstance().getReference().child("Notes Image").child("Notes Pdf");
+        notesRef = FirebaseDatabase.getInstance().getReference().child("Notes Details");
 
-        selectPdf = (EditText) findViewById(R.id.select_pdf);
-        className = (EditText) findViewById(R.id.pdf_class_name);
-        subjectName  = (EditText) findViewById(R.id.pdf_subject_name);
-        chapterName = (EditText) findViewById(R.id.pdf_chapter_name);
-        chapterNo  = findViewById(R.id.pdf_chapter_no);
 
-        uploadPdf = (TextView) findViewById(R.id.pdf_upload);
+
+        selectPdf = (EditText) findViewById(R.id.upload_pdf_name);
+        subjectName  = (EditText) findViewById(R.id.upload_pdf_subject_name);
+        chapterName = (EditText) findViewById(R.id.upload_pdf_chapter_name);
+        chapterNo  = findViewById(R.id.upload_pdf_chapter_no);
+
+        cancelpdf = (TextView) findViewById(R.id.upload_new_pdf_cancel);
+        addpdf = (TextView) findViewById(R.id.upload_new_pdf_confirm);
         back = (ImageView) findViewById(R.id.back);
+        uploadBoard = (RadioGroup)findViewById(R.id.upload_board_selection);
+        uploadCategory = (RadioGroup)findViewById(R.id.books_radio);
+        uploadStandard = (RadioGroup)findViewById(R.id.upload_pdf_standard_selection);
+
+        uploadBoard.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(i);
+                boardString = radioButton.getText().toString();
+            }
+        });
+
+        uploadStandard.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(i);
+                standardString = radioButton.getText().toString();
+            }
+        });
+
+        uploadCategory.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton radioButton = (RadioButton) radioGroup.findViewById(i);
+                categoryUpload = radioButton.getText().toString();
+            }
+        });
 
         selectPdf.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,7 +104,7 @@ public class UploadPdfActivity extends AppCompatActivity {
             }
         });
 
-        uploadPdf.setOnClickListener(new View.OnClickListener() {
+        addpdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UploadPdf();
@@ -109,7 +139,6 @@ public class UploadPdfActivity extends AppCompatActivity {
     private void UploadPdf() {
         sub_name = subjectName.getText().toString();
         chapter_name = chapterName.getText().toString();
-        class_no = className.getText().toString();
         chapter_no  = chapterNo.getText().toString();
 
         if (pdfUri == null)
@@ -121,10 +150,18 @@ public class UploadPdfActivity extends AppCompatActivity {
         } else if (TextUtils.isEmpty(chapter_name))
         {
             Toast.makeText(UploadPdfActivity.this, "Please enter chapter name", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(class_no))
+        } else if (TextUtils.isEmpty(standardString))
 
         {
             Toast.makeText(UploadPdfActivity.this, "Enter the class number", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(boardString))
+
+        {
+            Toast.makeText(UploadPdfActivity.this, "Choose the Board", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(categoryUpload))
+
+        {
+            Toast.makeText(UploadPdfActivity.this, "Select the Category", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(chapter_no))
         {
@@ -220,12 +257,12 @@ public class UploadPdfActivity extends AppCompatActivity {
 
                         if (task.isSuccessful())
                         {
-                            Intent i = new Intent(UploadPdfActivity.this, MainActivity.class);
+                            Intent i = new Intent(UploadPdfActivity.this, BooksActivity.class);
                             startActivity(i);
                             finish();
 
                             loadingBar.dismiss();
-                            Toast.makeText(UploadPdfActivity.this, "Subject Added Successfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadPdfActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
@@ -237,6 +274,5 @@ public class UploadPdfActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
 }

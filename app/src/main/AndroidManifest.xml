@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NCERTKitabAdmin">
         <activity
+            android:name=".ViewPdfActivity"
+            android:exported="false" />
+        <activity
             android:name=".ShowPdfActivity"
             android:exported="false" />
         <activity
